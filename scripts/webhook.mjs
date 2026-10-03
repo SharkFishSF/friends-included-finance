@@ -1,0 +1,3 @@
+const {TELEGRAM_BOT_TOKEN,TELEGRAM_WEBHOOK_SECRET,PUBLIC_APP_URL}=process.env;
+if(!TELEGRAM_BOT_TOKEN||!TELEGRAM_WEBHOOK_SECRET||!PUBLIC_APP_URL?.startsWith('https://'))throw new Error('Set bot token, webhook secret and HTTPS app URL');
+const response=await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:PUBLIC_APP_URL.replace(/\/$/,'')+'/api/telegram',secret_token:TELEGRAM_WEBHOOK_SECRET,allowed_updates:['message']})});const result=await response.json();if(!result.ok)throw new Error('Webhook setup failed. Check your bot token, HTTPS URL and secret format.');console.log('Telegram webhook connected.');
